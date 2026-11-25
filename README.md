@@ -1,30 +1,32 @@
-# ui-wording-ja（日本語の UI の文言）
+# ui-wording-ja
 
-Claude Code 用のスキル。日本語の UI の文言を、日本のふつうのアプリの言葉で書かせます。
+日本語UIの文言を整えるための Claude Code スキルです。
 
-- ボタン・メニューの語は対応表から選ぶ（消す → 削除、選ぶ → 選択、確認した → 確認済みにする）
-- トースト・空のときの文・確認ダイアログの書き方
-- 英語の直訳、呼びかけ、感嘆符、定着していないカタカナ語を避ける
+Claude に画面を作らせると、ボタンが「消す」「選ぶ」になっていたり、「正常に保存されました」のような翻訳調の文が出てきたりします。このスキルを入れておくと、日本の一般的なアプリで使われている言い回しに寄せて書いてくれます。
 
-UI のファイルを書いたあとに、ボタンに置かない語がないかを確かめる hook も付いています。
+- ボタンやメニューの用語を対応表で統一（消す → 削除、選ぶ → 選択、確認した → 確認済みにする など）
+- トースト、空状態、確認ダイアログの書き方
+- 直訳調、呼びかけ、感嘆符、なじみのないカタカナ語を避ける
 
-## 入れ方
+おまけとして、ファイル編集後にボタンの文言をチェックするフックも入っています。
+
+## インストール
 
 ```sh
 git clone https://github.com/kaigemap/claude-skill-ui-wording-ja.git ~/.claude/skills/ui-wording-ja
 ```
 
-hook も使うときは、Claude Code に「UI の言葉の検査を入れて」と言うと、`~/.claude/settings.json` に足します。新しいセッションから効きます。hook には Node.js が要ります。
+フックも使う場合は、Claude Code で「UI の言葉の検査を入れて」と頼むと `~/.claude/settings.json` に設定されます。反映は次のセッションからです。フックの実行には Node.js が必要です。
 
-## ファイル
+## 構成
 
-- `SKILL.md`: 決まりの本体
-- `terms.md`: ボタン・メニュー・リンクの語の対応表。hook もこの表を読みます
-- `guard-ja-ui-verbs.mjs`: hook（PostToolUse）
+- `SKILL.md` … スキル本体
+- `terms.md` … ボタン・メニュー・リンクの用語の対応表（フックもこれを参照）
+- `guard-ja-ui-verbs.mjs` … チェック用のフック（PostToolUse）
 
 ## English
 
-A Claude Code skill for writing Japanese UI copy the way ordinary Japanese apps do: a table of button verbs to avoid and their standard replacements, plus rules for toasts, empty states and confirmation dialogs. An optional PostToolUse hook flags short UI strings that use the avoided verbs. Install with `git clone https://github.com/kaigemap/claude-skill-ui-wording-ja.git ~/.claude/skills/ui-wording-ja`. The skill text is in Japanese.
+A Claude Code skill that keeps Japanese UI copy natural: a table of button verbs and their standard replacements, plus rules for toasts, empty states and confirmation dialogs. An optional PostToolUse hook flags short UI strings that use the avoided verbs. Install with `git clone https://github.com/kaigemap/claude-skill-ui-wording-ja.git ~/.claude/skills/ui-wording-ja`. The skill itself is written in Japanese.
 
 ## License
 
