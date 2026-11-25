@@ -29,7 +29,7 @@ description: 日本語の UI の文言（ボタン・メニュー・リンク・
 
 ## 検査の hook を入れる
 
-「UI の言葉の検査を入れて」と言われたら、`~/.claude/settings.json` の `hooks.PostToolUse` に次を足す（既にあれば足さない）。新しいセッションから効く。
+「UI の言葉の検査を入れて」と言われたら、`~/.claude/settings.json` の `hooks.PostToolUse` に次を追加する（既にあれば追加しない）。反映は次のセッションから。
 
 ```json
 {
