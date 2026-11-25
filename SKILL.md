@@ -48,4 +48,4 @@ description: 日本語の UI を作る・修正するときは必ず使う。画
 }
 ```
 
-UI のファイル（html・js・ts・tsx・vue・svelte・json）を書いたあと、文字列に terms.md・plain-words.md の表の左の列の語があると Claude に通知する（terms.md は句点・読点のない 20 字以下の文字列だけ）。フックは見落としを拾うためのもので、これに頼らず最初から正しく書く。無効にするときは、この項目を削除する。
+UI のファイル（html・js・ts・tsx・vue・svelte・json）を書いたあと、文字列に terms.md・plain-words.md の表の左の列の語があると Claude に通知する（terms.md の表は、句点・読点のない 20 字以下の文字列だけが対象）。フックは見落としを拾うためのもので、これに頼らず最初から正しく書く。無効にするときは、この項目を削除する。

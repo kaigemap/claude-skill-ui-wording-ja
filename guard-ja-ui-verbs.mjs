@@ -1,15 +1,15 @@
 #!/usr/bin/env node
-// Edit / Write のあと、UI のファイルに書いた文字列に、置かない語がないかを見る。
+// Edit / Write の後、UI のファイルに書いた文字列に、使わない語が含まれていないかを検査する。
 // - 句点・読点を含まない 20 字以下の文字列（ボタン・ラベルなど）: terms.md（ボタンの語）と plain-words.md（Claude語）の表
 // - それより長い文（ダイアログ・トーストなど）: plain-words.md の表だけ
-// 表は同じフォルダの .md の対応表の左の列（「・」区切り）から読む。見つけたら exit 2 で Claude に知らせる（書いた内容は戻さない）。
+// 語の一覧は、同じフォルダの .md の対応表の左の列（「・」区切り）から読み込む。見つかったら exit 2 で Claude に通知する（書いた内容は元に戻さない）。
 import { readFileSync } from 'node:fs';
 import { join, extname, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const UI_EXT = new Set(['.html', '.htm', '.js', '.mjs', '.jsx', '.ts', '.tsx', '.vue', '.svelte', '.json']);
-// 表の左の列の語を含んでいても使ってよい語。これを除いてから見る
+// 表の左の列の語を含んでいても使ってよい語。検査の前に取り除く
 const ALLOWED = ['元に戻す', '取り消す', 'やり直す', '書き出し', '取り込み', '読み込み', '切り替え', '窓口'];
 
 let input;
@@ -17,13 +17,13 @@ try { input = JSON.parse(readFileSync(0, 'utf8')); } catch { process.exit(0); }
 const ti = input.tool_input ?? {};
 const file = ti.file_path ?? '';
 const ext = extname(file).toLowerCase();
-// このスキル自身の表や説明は、語の例を含むので見ない
+// このスキル自身のファイルは語の例を含むので、検査しない
 if (resolve(file).startsWith(HERE + '/')) process.exit(0);
 if (!UI_EXT.has(ext)) process.exit(0);
 const text = [ti.content, ti.new_string, ...(ti.edits ?? []).map(e => e.new_string)].filter(Boolean).join('\n');
 if (!text) process.exit(0);
 
-// 長い語から当てる（「確かめる」を「確かめ」より先に）
+// 長い語から順に照合する（「確かめる」を「確かめ」より先に）
 function table(...names) {
   const pairs = [];
   for (const name of names) {
