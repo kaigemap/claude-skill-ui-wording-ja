@@ -11,8 +11,6 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const UI_EXT = new Set(['.html', '.htm', '.js', '.mjs', '.jsx', '.ts', '.tsx', '.vue', '.svelte', '.json']);
 // 表の左の列の語を含んでいても使ってよい語。検査の前に取り除く
 const ALLOWED = ['元に戻す', '取り消す', 'やり直す', '読み込み', '切り替え'];
-// 複合動詞（選び直す）: 「直す」の前が連用形（い段）
-const COMPOUND = /[いきぎしちにびみり]直(す|した|しました)/gu;
 // 出どころ・行き先を「から」「へ」で示す句（資料から選ぶ・出力管理へ送る）。末尾が表の動詞ならその文字列は通す
 const SOURCE_PHRASE = /(から|へ)[\p{Script=Han}\p{Script=Hiragana}]{1,4}$/u;
 
@@ -47,7 +45,7 @@ function table(...names) {
 
 const hits = new Map();
 function check(s, pairs) {
-  let t = s.replace(COMPOUND, '');
+  let t = s;
   for (const a of ALLOWED) t = t.split(a).join('');
   if (pairs === short) {
     const end = pairs.find(([w]) => t.endsWith(w));
